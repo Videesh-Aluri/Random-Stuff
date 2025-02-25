@@ -1,0 +1,34 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <button class="btn" id="homeButton" ><li><a href="/Home.html">Home</a></li></button>
+    <h1>My To-Do List</h1>
+
+    <input type="text" id="textBox" placeholder="Enter a new task" >
+    
+    <button onclick="addToTaskList()" id="addBtn">Add</button>
+    <button onclick="deleteTask()" id="deleteBtn"> Delete</button>
+
+    <table id="itemList" style="width: 600px;" >
+        <th style="width:70%;">Tasks</th>
+        <th style="width:10%;">Date assigned</th>
+        <th style="width:10%;">Action</th>
+        <th style="width:10%;">Priority</th>
+    </table>
+
+
+</body>
+</html>
+<!-- stuff to do: 	
+Add Status feature	
+ -->
+<!-- stuff done
+ Add Date Column
+ Add priority feature -->

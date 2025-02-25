@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Password Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Random Password Generator</h1>
+    <!-- <h2>Creates passwords with lots of Character without even you trying</h2> -->
+    <button class="btn" id="homeButton" ><li><a href="/Home.html">Home</a></li></button>
+
+    <div class="inputs">
+      <label for="passwordLength">Password Length:</label>
+      <input type="number" id="passwordLength" min="1" value="12">
+      <div class="checkboxes">
+        <label><input type="checkbox" id="includeSymbols" checked> Include Symbols</label>
+        <!-- <input type="number" id="symbolCount" min="0" value="1"> -->
+        <label><input type="checkbox" id="includeNumbers" checked> Include Numbers</label>
+        <!-- <input type="number" id="numberCount" min="0" value="1"> -->
+        <label><input type="checkbox" id="includeUppercase" checked> Include Uppercase</label>
+        <!-- <input type="number" id="uppercaseCount" min="0" value="1"> -->
+        <label><input type="checkbox" id="includeLowercase" checked> Include Lowercase</label>
+        <!-- <input type="number" id="lowercaseCount" min="0" value="1"> -->
+      </div>
+    </div>
+    
+    <button class="btn" id="generateButton" onclick="RPG()">Generate Password</button>
+    <button class="btn" id="Copy" onclick="copyToClipboard()">Copy</button>
+    <div class="password-display" id="passwordDisplay">Your password will appear here</div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+

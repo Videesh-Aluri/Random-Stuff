@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base64 Encoding/Decoding</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Base64 Encoding/Decoding</h1>
+        <button class="btn" id="homeButton" ><li><a href="/Home.html">Home</a></li></button>
+        <p>Use the text box below to encode or decode Base64:</p>
+        <textarea id="inputText" placeholder="Enter text here..."></textarea>
+        <div class="buttons">
+            <button onclick="encode()">Encode</button>
+            <button onclick="decode()">Decode</button>
+        </div>
+        <div class="output">
+            <button class="btn" id="Copy" onclick="copyToClipboard()">Copy</button>
+            <h2>Output</h2>
+            <p id="outputText"></p>
+        </div>
+        <div id="copyMessage" class="copy-message">Copied to clipboard!</div>
+        <div id="errorMessage" class="error-message">Error processing text!</div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

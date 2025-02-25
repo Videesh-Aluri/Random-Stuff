@@ -1,0 +1,82 @@
+/* styles.css */
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #282c34;
+    font-family: 'Arial', sans-serif;
+    color: #ffffff;
+  }
+  
+  .container {
+    text-align: center;
+    background-color: #3b3f46;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1 {
+    margin-bottom: 20px;
+  }
+  
+  .inputs {
+    margin-bottom: 20px;
+  }
+  
+  .inputs label {
+    display: block;
+    margin: 10px 0 5px;
+  }
+  
+  .inputs input {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 50px;
+    text-align: center;
+  }
+  
+  .number-display {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #61dafb;
+    border-radius: 10px;
+    overflow: auto;
+    width: 500px;
+    max-width: 500px;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    background: linear-gradient(45deg, #6a11cb, #2575fc);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .btn:hover {
+    background: linear-gradient(45deg, #5c0fc2, #2050e5);
+    transform: scale(1.05);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .btn:active {
+    background: linear-gradient(45deg, #4e0dac, #1b3fb8);
+    transform: scale(1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
