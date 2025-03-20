@@ -6,7 +6,7 @@ function RNG() {
   numberDisplay.textContent = "";
 
   for (let i = 0; i < numberOfNumbers.value; i++) {
-    num = Math.floor(Math.random() * HighestPossibleNum.value) + 1;
+    num = Math.floor(Math.random() * HighestPossibleNum.value)+1;
     numberDisplay.textContent += " " + BigInt(num) + " ";
     console.log(num);
   }
