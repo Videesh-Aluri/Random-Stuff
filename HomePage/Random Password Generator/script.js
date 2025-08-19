@@ -164,7 +164,7 @@ function RPG() {
       j--;
     } else {
       console.log(characters);
-      passwordDisplay.innerHTML += `<p>${password}</p>`;
+      passwordDisplay.innerHTML += `<p>${j + 1}. ${password}</p>`;
       prePassword = password;
     }
     symbolCount = 0;
