@@ -35,41 +35,71 @@ function RPG() {
       symbolCount + numberCount + uppercaseCount + lowercaseCount < length ===
       false
     ) {
-      for (let i = 0; i < length.value; i++) {
-        randomType = Math.floor(Math.random() * 4);
-        switch (randomType) {
-          case 0:
-            if (includeSymbols.checked === true) {
-              symbolCount++;
-            } else {
-              randomType = Math.floor(Math.random() * 4);
-              length.value++;
-            }
-            break;
-          case 1:
-            if (includeNumbers.checked === true) {
-              numberCount++;
-            } else {
-              randomType = Math.floor(Math.random() * 4);
-              length.value++;
-            }
-            break;
-          case 2:
-            if (includeUppercase.checked === true) {
-              uppercaseCount++;
-            } else {
-              randomType = Math.floor(Math.random() * 4);
-              length.value++;
-            }
-            break;
-          case 3:
-            if (includeLowercase.checked === true) {
-              lowercaseCount++;
-            } else {
-              randomType = Math.floor(Math.random() * 4);
-              length.value++;
-            }
-            break;
+      if (
+        includeSymbols.checked === true &&
+        includeNumbers.checked === false &&
+        includeUppercase.checked === false &&
+        includeLowercase.checked === false
+      ) {
+        symbolCount = length.value;
+      } else if (
+        includeSymbols.checked === false &&
+        includeNumbers.checked === true &&
+        includeUppercase.checked === false &&
+        includeLowercase.checked === false
+      ) {
+        numberCount = length.value;
+      } else if (
+        includeSymbols.checked === false &&
+        includeNumbers.checked === false &&
+        includeUppercase.checked === true &&
+        includeLowercase.checked === false
+      ) {
+        uppercaseCount = length.value;
+      } else if (
+        includeSymbols.checked === false &&
+        includeNumbers.checked === false &&
+        includeUppercase.checked === false &&
+        includeLowercase.checked === true
+      ) {
+        lowercaseCount = length.value;
+      } else {
+        for (let i = 0; i < length.value; i++) {
+          randomType = Math.floor(Math.random() * 4);
+          switch (randomType) {
+            case 0:
+              if (includeSymbols.checked === true) {
+                symbolCount++;
+              } else {
+                randomType = Math.floor(Math.random() * 4);
+                length.value++;
+              }
+              break;
+            case 1:
+              if (includeNumbers.checked === true) {
+                numberCount++;
+              } else {
+                randomType = Math.floor(Math.random() * 4);
+                length.value++;
+              }
+              break;
+            case 2:
+              if (includeUppercase.checked === true) {
+                uppercaseCount++;
+              } else {
+                randomType = Math.floor(Math.random() * 4);
+                length.value++;
+              }
+              break;
+            case 3:
+              if (includeLowercase.checked === true) {
+                lowercaseCount++;
+              } else {
+                randomType = Math.floor(Math.random() * 4);
+                length.value++;
+              }
+              break;
+          }
         }
       }
     }
@@ -82,39 +112,48 @@ function RPG() {
       uppercaseCount,
       lowercaseCount
     );
-
+    const CHAR_SETS = {
+      uppercases: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+      lowercases: "abcdefghijklmnopqrstuvwxyz",
+      numbers: "0123456789",
+      symbols: "!@#$%^&*()_+[]{}|;:,.<>?",
+    };
     for (let SC = 0; SC < symbolCount; SC++) {
-      let symbol = Math.floor(Math.random() * 15) + 33;
-      console.log(String.fromCharCode(symbol));
-      characters.push(String.fromCharCode(symbol));
+      const randomIndex = Math.floor(Math.random() * CHAR_SETS.symbols.length);
+      let symbol = CHAR_SETS.symbols[randomIndex];
+      console.log(symbol);
+      characters.push(symbol);
       symbol = 0;
     }
 
     for (let NC = 0; NC < numberCount; NC++) {
-      let number = Math.floor(Math.random() * 10) + 48;
-      console.log(String.fromCharCode(number));
-      characters.push(String.fromCharCode(number));
+      const randomIndex = Math.floor(Math.random() * CHAR_SETS.numbers.length);
+      let number = CHAR_SETS.numbers[randomIndex];
+      console.log(number);
+      characters.push(number);
       number = 0;
     }
 
     for (let UC = 0; UC < uppercaseCount; UC++) {
-      let uppercase = Math.floor(Math.random() * 26) + 65;
-      console.log(String.fromCharCode(uppercase));
-      characters.push(String.fromCharCode(uppercase));
+      const randomIndex = Math.floor(Math.random() * CHAR_SETS.numbers.length);
+      let uppercase = CHAR_SETS.uppercases[randomIndex];
+      console.log(uppercase);
+      characters.push(uppercase);
       uppercase = 0;
     }
 
     for (let LC = 0; LC < lowercaseCount; LC++) {
-      let lowercase = Math.floor(Math.random() * 26) + 97;
-      console.log(String.fromCharCode(lowercase));
-      characters.push(String.fromCharCode(lowercase));
+      const randomIndex = Math.floor(Math.random() * CHAR_SETS.numbers.length);
+      let lowercase = CHAR_SETS.lowercases[randomIndex];
+      console.log(lowercase);
+      characters.push(lowercase);
       lowercase = 0;
     }
 
     // Shuffle the characters array
     //The Fisher-Yates shuffle algorithm
-    for (let e = characters.length - 1; e > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
+    for (let e = characters.length - 1; e > 0; e--) {
+      const j = Math.floor(Math.random() * (e + 1));
       [characters[e], characters[j]] = [characters[j], characters[e]];
     }
 
