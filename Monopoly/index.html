@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monopoly Game</title>
+  <script src="script.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  
+  <div id="player-selection">
+    <h2>Player Selection</h2>
+    <button type="button" onclick="addPlayer()">Add Player</button>
+      <button type="button" onclick="startGame()">Start Game</button>
+    <form id="player-form">
+      <div class="player-input">
+        <label for="player-name-0">Player 1 Name:</label>
+        <input type="text" id="player-name-0" name="player-name-0" value="Player 1">
+        <label for="player-color-0">Color:</label>
+        <input type="color" id="player-color-0" name="player-color-0" value="#ff0000">
+      </div>
+      <div class="player-input">
+        <label for="player-name-1">Player 2 Name:</label>
+        <input type="text" id="player-name-1" name="player-name-1" value="Player 2">
+        <label for="player-color-1">Color:</label>
+        <input type="color" id="player-color-1" name="player-color-1" value="#0000ff">
+      </div>
+      
+      
+    </form>
+  </div>
+  <div>
+    
+  </div>
+  
+  
+
+
+  <div id="container">
+    
+    <div id="board">
+      
+      <!-- Top Row -->
+      <div  class="space corner" place=0 style="grid-column: 1; grid-row: 1;">
+        <div class="color-banner"></div>
+        Go
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img1').style.display='block'" onmouseout="document.getElementById('hover-img1').style.display='none'" id="space" place="1" style="grid-column: 2; grid-row: 1;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img1" src="MonopolyPropertyImages/MediterraneanAvenue.jpg" alt="Preview" style="display:none; position:absolute; left:0px; top:90px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color: #8B4513;"></div>
+        <div class="mortgage-banner" id="mortgage-1">Not Mortgaged</div>
+        Mediterranean Avenue
+        <br>
+        60
+        <span class="house-container" id="house-1"></span>
+        <div class="owner-banner" id="owner-1">Unowned</div>
+      </div>
+      <div class="space" place=2 style="grid-column: 3; grid-row: 1;">
+        <div class="color-banner"></div>
+        Community Chest
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img3').style.display='block'" onmouseout="document.getElementById('hover-img3').style.display='none'" id="space" place="3" style="grid-column: 4; grid-row: 1;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img3" src="MonopolyPropertyImages/BalticAvenue.jpg" alt="Preview" style="display:none; position:absolute; top:90px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color: #8B4513;"></div>
+        <div class="mortgage-banner" id="mortgage-3">Not Mortgaged</div>
+        Baltic Avenue
+        <br>
+        60
+        <span class="house-container" id="house-3"></span>
+        <div class="owner-banner" id="owner-3">Unowned</div>
+      </div>
+      <div class="space" place=4 style="grid-column: 5; grid-row: 1;">
+        <div class="color-banner"></div>
+        Income Tax
+        <br>
+        200
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img5').style.display='block'" onmouseout="document.getElementById('hover-img5').style.display='none'" place=5 id="space" style="grid-column: 6; grid-row: 1;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img5" src="MonopolyPropertyImages/ReadingRailroad.jpg" alt="Preview" style="display:none; position:absolute;  top:90px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color:black;"></div>
+        <div class="mortgage-banner" id="mortgage-5">Not Mortgaged</div>
+        Reading Railroad
+        <br>
+        200
+        <div class="owner-banner" id="owner-5">Unowned</div>
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img6').style.display='block'" onmouseout="document.getElementById('hover-img6').style.display='none'" id="space" place=6 style="grid-column: 7; grid-row: 1;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <div class="color-banner" style="background-color: #87CEEB;"></div>
+        <img id="hover-img6" src="MonopolyPropertyImages/OrientalAvenue.jpg" alt="Preview" style="display:none; position:absolute;  top:90px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="mortgage-banner" id="mortgage-6">Not Mortgaged</div>
+        Oriental Avenue
+        <br>
+        100
+        <span class="house-container" id="house-6"></span>
+        <div class="owner-banner" id="owner-6">Unowned</div>
+      </div>
+      <div class="space" place=7 style="grid-column: 8; grid-row: 1;">
+        <div class="color-banner"></div>
+        Chance
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img8').style.display='block'" onmouseout="document.getElementById('hover-img8').style.display='none'" id="space" place="8" style="grid-column: 9; grid-row: 1;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img8" src="MonopolyPropertyImages/VermontAvenue.jpg" alt="Preview" style="display:none; position:absolute;  top:90px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color: #87CEEB;"></div>
+        <div class="mortgage-banner" id="mortgage-8">Not Mortgaged</div>
+        Vermont Avenue
+        <br>
+        100
+        <span class="house-container" id="house-8"></span>
+        <div class="owner-banner" id="owner-8">Unowned</div>
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img9').style.display='block'" onmouseout="document.getElementById('hover-img9').style.display='none'" id="space" place="9" style="grid-column: 10; grid-row: 1;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img9" src="MonopolyPropertyImages/ConnecticutAvenue.jpg" alt="Preview" style="display:none; position:absolute; right:0px; top:90px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color: #87CEEB;"></div>
+        <div class="mortgage-banner" id="mortgage-9">Not Mortgaged</div>
+        Connecticut Avenue
+        <br>
+        120
+        <span class="house-container" id="house-9"></span>
+        <div class="owner-banner" id="owner-9">Unowned</div>
+      </div>
+      <div class="space corner" place=10 style="grid-column: 11; grid-row: 1;">
+        <div class="color-banner"></div>
+        Jail
+      </div>
+      <!-- Right Column -->
+      <div class="space" onmouseover="document.getElementById('hover-img11').style.display='block'" onmouseout="document.getElementById('hover-img11').style.display='none'" id="space" place=11 style="grid-column: 11; grid-row: 2;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img11" src="MonopolyPropertyImages/St.CharlesPlace.jpg" alt="Preview" style="display:none; position:absolute; right:110px; top:0px;  max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color: #FF69B4;"></div>
+        <div class="mortgage-banner" id="mortgage-11">Not Mortgaged</div>
+        St. Charles Place
+        <br>
+        140
+        <span class="house-container" id="house-11"></span>
+        <div class="owner-banner" id="owner-11">Unowned</div>
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img12').style.display='block'" onmouseout="document.getElementById('hover-img12').style.display='none'" place=12 id="space" style="grid-column: 11; grid-row: 3;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img12" src="MonopolyPropertyImages/ElectricCompany.jpg" alt="Preview" style="display:none; position:absolute; right:110px; top: -90px;   max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner"></div>
+        Electric Company
+        <br>
+        150
+        <div class="owner-banner" id="owner-12">Unowned</div>
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img13').style.display='block'" onmouseout="document.getElementById('hover-img13').style.display='none'" id="space" place=13 style="grid-column: 11; grid-row: 4;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img13" src="MonopolyPropertyImages/StatesAvenue.jpg" alt="Preview" style="display:none; position:absolute; right:110px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color: #FF69B4;"></div>
+        <div class="mortgage-banner" id="mortgage-13">Not Mortgaged</div>
+        States Avenue
+        <br>
+        140
+        <span class="house-container" id="house-13"></span>
+        <div class="owner-banner" id="owner-13">Unowned</div>
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img14').style.display='block'" onmouseout="document.getElementById('hover-img14').style.display='none'" id="space" place=14 style="grid-column: 11; grid-row: 5;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img14" src="MonopolyPropertyImages/VirginiaAvenue.jpg" alt="Preview" style="display:none; position:absolute; right:110px;  max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color: #FF69B4;"></div>
+        <div class="mortgage-banner" id="mortgage-14">Not Mortgaged</div>
+        Virginia Avenue
+        <br>
+        160
+        <span class="house-container" id="house-14"></span>
+        <div class="owner-banner" id="owner-14">Unowned</div>
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img15').style.display='block'" onmouseout="document.getElementById('hover-img15').style.display='none'" place=15 id="space" style="grid-column: 11; grid-row: 6;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img15" src="MonopolyPropertyImages/PennsylvaniaRailroad.jpg" alt="Preview" style="display:none; position:absolute; right:110px;  max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color:black;"></div>
+        <div class="mortgage-banner" id="mortgage-15">Not Mortgaged</div>
+        Pennsylvania Railroad
+        <br>
+        200
+        <div class="owner-banner" id="owner-15">Unowned</div>
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img16').style.display='block'" onmouseout="document.getElementById('hover-img16').style.display='none'" id="space" place=16 style="grid-column: 11; grid-row: 7;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img16" src="MonopolyPropertyImages/St.JamesPlace.jpg" alt="Preview" style="display:none; position:absolute; right:110px;  max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color: #FFA500;"></div>
+        <div class="mortgage-banner" id="mortgage-16">Not Mortgaged</div>
+        St. James Place
+        <br>
+        180
+        <span class="house-container" id="house-16"></span>
+        <div class="owner-banner" id="owner-16">Unowned</div>
+      </div>
+      <div class="space" place=17 style="grid-column: 11; grid-row: 8;">
+        <div class="color-banner"></div>
+        Community Chest
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img18').style.display='block'" onmouseout="document.getElementById('hover-img18').style.display='none'" id="space" place=18 style="grid-column: 11; grid-row: 9;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img18" src="MonopolyPropertyImages/TennesseeAvenue.jpg" alt="Preview" style="display:none; position:absolute; right:110px; bottom: -90px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color: #FFA500;"></div>
+        <div class="mortgage-banner" id="mortgage-18">Not Mortgaged</div>
+        Tennessee Avenue
+        <br>
+        180
+        <span class="house-container" id="house-18"></span>
+        <div class="owner-banner" id="owner-18">Unowned</div>
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img19').style.display='block'" onmouseout="document.getElementById('hover-img19').style.display='none'" id="space" place=19 style="grid-column: 11; grid-row: 10;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img19" src="MonopolyPropertyImages/NewYorkAvenue.jpg" alt="Preview" style="display:none; position:absolute; right:110px; bottom:0px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color: #FFA500;"></div>
+        <div class="mortgage-banner" id="mortgage-19">Not Mortgaged</div>
+        New York Avenue
+        <br>
+        200
+        <span class="house-container" id="house-19"></span>
+        <div class="owner-banner" id="owner-19">Unowned</div>
+      </div>
+      <div class="space corner" place=20 style="grid-column: 11; grid-row: 11;">
+        <div class="color-banner"></div>
+        Free Parking
+      </div>
+      <!-- Bottom Row -->
+      <div class="space" onmouseover="document.getElementById('hover-img21').style.display='block'" onmouseout="document.getElementById('hover-img21').style.display='none'" id="space" place=21 style="grid-column: 10; grid-row: 11;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img21" src="MonopolyPropertyImages/KentuckyAvenue.jpg" alt="Preview" style="display:none; position:absolute; right:0; bottom:90px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color: #FF0000;"></div>
+        <div class="mortgage-banner" id="mortgage-21">Not Mortgaged</div>
+        Kentucky Avenue
+        <br>
+        220
+        <span class="house-container" id="house-21"></span>
+        <div class="owner-banner" id="owner-21">Unowned</div>
+      </div>
+      <div class="space" place=22 style="grid-column: 9; grid-row: 11;">
+        <div class="color-banner"></div>
+        Chance
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img23').style.display='block'" onmouseout="document.getElementById('hover-img23').style.display='none'" id="space" place=23 style="grid-column: 8; grid-row: 11;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img23" src="MonopolyPropertyImages/IndianaAvenue.jpg" alt="Preview" style="display:none; position:absolute;  bottom:90px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color: #FF0000;"></div>
+        <div class="mortgage-banner" id="mortgage-23">Not Mortgaged</div>
+        Indiana Avenue
+        <br>
+        220
+        <span class="house-container" id="house-23"></span>
+        <div class="owner-banner" id="owner-23">Unowned</div>
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img24').style.display='block'" onmouseout="document.getElementById('hover-img24').style.display='none'" id="space" place=24 style="grid-column: 7; grid-row: 11;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img24" src="MonopolyPropertyImages/IllinoisAvenue.jpg" alt="Preview" style="display:none; position:absolute;  bottom:90px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color: #FF0000;"></div>
+        <div class="mortgage-banner" id="mortgage-24">Not Mortgaged</div>
+        Illinois Avenue
+        <br>
+        240
+        <span class="house-container" id="house-24"></span>
+        <div class="owner-banner" id="owner-24">Unowned</div>
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img25').style.display='block'" onmouseout="document.getElementById('hover-img25').style.display='none'" place=25 id="space" style="grid-column: 6; grid-row: 11;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img25" src="MonopolyPropertyImages/B&ORailroad.jpg" alt="Preview" style="display:none; position:absolute;  bottom:90px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color:black;"></div>
+        <div class="mortgage-banner" id="mortgage-25">Not Mortgaged</div>
+        B. & O. Railroad
+        <br>
+        200
+        <div class="owner-banner" id="owner-25">Unowned</div>
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img26').style.display='block'" onmouseout="document.getElementById('hover-img26').style.display='none'" id="space" place=26 style="grid-column: 5; grid-row: 11;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img26" src="MonopolyPropertyImages/AtlanticAvenue.jpg" alt="Preview" style="display:none; position:absolute;  bottom:90px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />        <div class="color-banner" style="background-color: #FFFF00;"></div>
+        <div class="mortgage-banner" id="mortgage-26">Not Mortgaged</div>
+        Atlantic Avenue
+        <br>
+        260
+        <span class="house-container" id="house-26"></span>
+        <div class="owner-banner" id="owner-26">Unowned</div>
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img27').style.display='block'" onmouseout="document.getElementById('hover-img27').style.display='none'" id="space" place=27 style="grid-column: 4; grid-row: 11;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img27" src="MonopolyPropertyImages/VentnorAvenue.jpg" alt="Preview" style="display:none; position:absolute;  bottom:90px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color: #FFFF00;"></div>
+        <div class="mortgage-banner" id="mortgage-27">Not Mortgaged</div>
+        Ventnor Avenue
+        <br>
+        260
+        <span class="house-container" id="house-27"></span>
+        <div class="owner-banner" id="owner-27">Unowned</div>
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img28').style.display='block'" onmouseout="document.getElementById('hover-img28').style.display='none'" place=28 id="space" style="grid-column: 3; grid-row: 11;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img28" src="MonopolyPropertyImages/WaterWorks.jpg" alt="Preview" style="display:none; position:absolute; bottom:90px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner"></div>
+        <div class="mortgage-banner" id="mortgage-28">Not Mortgaged</div>
+        Water Works
+        <br>
+        150
+        <div class="owner-banner" id="owner-28">Unowned</div>
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img29').style.display='block'" onmouseout="document.getElementById('hover-img29').style.display='none'" id="space" place=29 style="grid-column: 2; grid-row: 11;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img29" src="MonopolyPropertyImages/MarvinGardens.jpg" alt="Preview" style="display:none; position:absolute; left:0; bottom:90px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color: #FFFF00;"></div>
+        <div class="mortgage-banner" id="mortgage-29">Not Mortgaged</div>
+        Marvin Gardens
+        <br>
+        280
+        <span class="house-container" id="house-29"></span>
+        <div class="owner-banner" id="owner-29">Unowned</div>
+      </div>
+      <div class="space corner" place=30 style="grid-column: 1; grid-row: 11;">
+        <div class="color-banner"></div>
+        Go to Jail
+      </div>
+      <!-- Left Column -->
+      <div class="space" onmouseover="document.getElementById('hover-img31').style.display='block'" onmouseout="document.getElementById('hover-img31').style.display='none'" id="space" place=31 style="grid-column: 1; grid-row: 10;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img31" src="MonopolyPropertyImages/PacificAvenue.jpg" alt="Preview" style="display:none; position:absolute; left:110px; bottom:0px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color: #008000;"></div>
+        <div class="mortgage-banner" id="mortgage-31">Not Mortgaged</div>
+        Pacific Avenue
+        <br>
+        300
+        <span class="house-container" id="house-31"></span>
+        <div class="owner-banner" id="owner-31">Unowned</div>
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img32').style.display='block'" onmouseout="document.getElementById('hover-img32').style.display='none'" id="space" place=32 style="grid-column: 1; grid-row: 9;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img32" src="MonopolyPropertyImages/NorthCarolinaAvenue.jpg" alt="Preview" style="display:none; position:absolute; left:110px; bottom: -90px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color: #008000;"></div>
+        <div class="mortgage-banner" id="mortgage-32">Not Mortgaged</div>
+        North Carolina Avenue
+        <br>
+        300
+        <span class="house-container" id="house-32"></span>
+        <div class="owner-banner" id="owner-32">Unowned</div>
+      </div>
+      <div class="space" place=33 style="grid-column: 1; grid-row: 8;">
+        <div class="color-banner"></div>
+        Community Chest
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img34').style.display='block'" onmouseout="document.getElementById('hover-img34').style.display='none'" id="space" place=34 style="grid-column: 1; grid-row: 7;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img34" src="MonopolyPropertyImages/PennsylvaniaAvenue.jpg" alt="Preview" style="display:none; position:absolute; left:110px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color: #008000;"></div>
+        <div class="mortgage-banner" id="mortgage-34">Not Mortgaged</div>
+        Pennsylvania Avenue
+        <br>
+        320
+        <span class="house-container" id="house-34"></span>
+        <div class="owner-banner" id="owner-34">Unowned</div>
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img35').style.display='block'" onmouseout="document.getElementById('hover-img35').style.display='none'" place=35 id="space" style="grid-column: 1; grid-row: 6;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img35" src="MonopolyPropertyImages/ShortLine.jpg" alt="Preview" style="display:none; position:absolute; left:110px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color:black;"></div>
+        <div class="mortgage-banner" id="mortgage-35">Not Mortgaged</div>
+        Short Line
+        <br>
+        200
+        <div class="owner-banner" id="owner-35">Unowned</div>
+      </div>
+      <div class="space" place=36 style="grid-column: 1; grid-row: 5;">
+        <div class="color-banner"></div>
+        Chance
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img37').style.display='block'" onmouseout="document.getElementById('hover-img37').style.display='none'" id="space" place=37 style="grid-column: 1; grid-row: 4;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img37" src="MonopolyPropertyImages/ParkPlace.jpg" alt="Preview" style="display:none; position:absolute; left:110px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color: #0000FF;"></div>
+        <div class="mortgage-banner" id="mortgage-37">Not Mortgaged</div>
+        Park Place
+        <br>
+        350
+        <span class="house-container" id="house-37"></span>
+        <div class="owner-banner" id="owner-37">Unowned</div>
+      </div>
+      <div class="space" place=38 style="grid-column: 1; grid-row: 3;">
+        <div class="color-banner"></div>
+        Luxury Tax
+        <br>
+        100
+      </div>
+      <div class="space" onmouseover="document.getElementById('hover-img39').style.display='block'" onmouseout="document.getElementById('hover-img39').style.display='none'" id="space" place=39 style="grid-column: 1; grid-row: 2;" onclick="this.style.backgroundColor = 'darkgreen';">
+        <img id="hover-img39" src="MonopolyPropertyImages/Boardwalk.jpg" alt="Preview" style="display:none; position:absolute; left:110px; top: 0px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
+        <div class="color-banner" style="background-color: #0000FF;"></div>
+        <div class="mortgage-banner" id="mortgage-39">Not Mortgaged</div>
+        Boardwalk
+        <br>
+        400
+        <span class="house-container" id="house-39"></span>
+        <div class="owner-banner" id="owner-39">Unowned</div>
+      </div>
+       <div class="center">
+        <div class="property-container">
+          <button id="Gameinfo">Game info</button> <button id="Buy/selling">Buy/selling</button> <button id="Trading">Trading</button>
+          <br>
+          <button id="dice">Roll dice</button> <button id="NextTurn" style="display: none;">Next turn</button>
+          <br>
+          <button id="Pay50" style="display: none;">Pay 50$</button> <button id="UseGOFJRC" style="display: none;">Use get out of jail free card</button>
+        </div>
+        <div id="property-actions" class="property-container" style="display: none;">
+          <h2>Manage Properties</h2>
+          
+          
+            <button id="buy-house" onclick="buyHouse()">Buy House</button>
+            <button id="buy-hotel" onclick="buyHotel()">Buy Hotel</button>
+            <button id="sell-hotel" onclick="sellHouseandHotel()">Sell House/Hotel</button>
+            <button id="mortgage-property" onclick="mortgageProperty()">Mortgage Property</button>
+            <button id="unmortgage-property" onclick="unmortgageProperty()">Unmortgage Property</button>
+        
+            <br>
+          
+            <button id="declareBankrupcy" style="display:none;">Declare bankrupcy</button>
+            <button id="NoLongerindebt" style="display: none;">No longer in debt</button>
+            
+            
+        </div>
+        <!-- WIHIG stands for what is happing in game -->
+        <div id="WIHIG" class="game-status-container" >
+          <p>Hello</p>
+        </div>
+        <div id="auctioncontainer" class="property-container" style="display:none;">
+          <h2>Auction</h2>
+          <h3>Property bidding on: <span id="currentproperty">None</span></h3>
+          <h3>Highest Bidder: <span id="highestbidder">None</span></h3>
+          <h3>Current Bidder: <span id="currentbidder">None</span></h3>
+          <input type="text" id="bid" class="bid-input" placeholder="Enter bid amount">
+          <div id="bid-buttons">
+            <button id="bidButton" class="stepBtn">Place Bid</button>
+            <button id="exit" class="stepBtn">Leave Auction</button>
+            <button id="Pass" class="stepBtn">Pass</button>
+          </div>
+          
+        </div>
+        <div id="tradecontainer"  class="property-container" style="display:none;" >
+          <h2>Trade</h2>
+          <div class="trade-area">
+            <div class="trade-row">
+              <div style="flex:1;">
+                <label for="tradeplayer">Select Player 1:</label>
+                <select id="tradeplayer" class="player-dropdown" onchange="updateDropdown1(document.getElementById('tradeplayer'))">
+                  <option></option>
+                  <!-- Player options will be populated here -->
+                </select>
+              </div>
+              <div style="flex:1;">
+                <label for="tradeplayer2">Select Player 2:</label>
+                <select id="tradeplayer2" class="player-dropdown" onchange="updateDropdown2(document.getElementById('tradeplayer2'))">
+                  <option></option>
+                  <!-- Player options will be populated here -->
+                </select>
+              </div>
+            </div>
+            <div class="trade-money-row">
+              <div style="flex:1;">
+                <label for="trade-money">Money:</label>
+                <input type="number" id="trade-money" class="trade-input" placeholder="Enter amount" onchange="updateTradeMoneyLimit(document.getElementById('tradeplayer').selectedOptions[0].id)">
+              </div>
+              <div style="flex:1;">
+                <label for="trade-money2">Money:</label>
+                <input type="number" id="trade-money2" class="trade-input" placeholder="Enter amount"  onchange="updateTradeMoneyLimit(document.getElementById('tradeplayer2').selectedOptions[0].id)">
+              </div>
+            </div>
+            <div class="trade-properties-row">
+              <div style="flex:1;">
+                <label for="trade-properties"> Properties:</label>
+                <ul id="trade-properties" class="property-dropdown" style="list-style: none; padding: 0;">
+                
+                </ul>
+              </div>
+              <div style="flex:1;">
+                <label for="trade-properties2"> Properties:</label>
+                <ul id="trade-properties2" class="property-dropdown" style="list-style: none; padding: 0;">
+                
+                </ul>
+              </div>
+            </div>
+            <button id="offer-trade" class="offer-trade" onclick="offerTrade()" style="width: 100%; margin-top: 8px;">Offer Trade</button>
+            <button id="accept-trade" class="accept-trade" onclick="acceptTrade()" style="width: 100%; margin-top: 8px; display: none;">Accept Trade</button>
+
+          </div>
+        </div>
+      </div>
+
+     
+    </div>
+    <div id="player-info">
+      <h2>Player Info</h2>
+      <div id="playerlist">
+        <div class="player" id="BankInfo">
+          <h2>Bank</h2>
+          <p id="BankMoney">Money: 20580</p>
+          <p id="BankHouse">Houses: 32</p>
+          <p id="BankHotel">Hotels: 12</p>
+      </div>
+      </div>
+      
+        <div class="property-container1">
+          <h2 id="propertyName"></h2>
+          <p id="propertyPrice">Price:</p>
+          <p id="propertyRent">Rent:</p>
+          <p id="propertyRentWithcolorset">Rent with color set: </p>
+          <p id="propertyHouse1">House 1:</p>
+          <p id="propertyHouse2">House 2:</p>
+          <p id="propertyHouse3">House 3:</p>
+          <p id="propertyHouse4">House 4:</p>
+          <p id="propertyHotel">Hotel:</p>
+          <button id="Buy" style="display: none;">Buy</button>
+      </div>
+      
+      
+      
+
+    </div>  
+  </div>
+<button class="btn" id="homeButton"><li><a href="/Home.html">Home</a></li></button>
+</body>
+
+</html>

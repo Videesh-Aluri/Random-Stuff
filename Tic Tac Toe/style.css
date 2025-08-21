@@ -1,0 +1,102 @@
+body {
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-gap: 10px;
+}
+
+.cell {
+  width: 100px;
+  height: 100px;
+  background-color: #fff;
+  border: 2px solid #000;
+  border-radius: 10px;
+  font-size: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.cell:hover {
+  background-color: #e0e0e0;
+  transform: scale(1.05);
+}
+
+.cell:active {
+  background-color: #d0d0d0;
+  transform: scale(1);
+}
+
+#grid {
+  background-color: #333;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.btnReset {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.btnReset:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+.btnReset:active {
+  background-color: #3e8e41;
+  transform: scale(1);
+}
+
+#status {
+  margin-top: 20px;
+  font-size: 1.5em;
+  color: #000;
+}
+
+/* Button Styles */
+.btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: linear-gradient(45deg, #6a11cb, #2575fc); /* Gradient background */
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adding shadow */
+}
+
+.btn:hover {
+  background: linear-gradient(45deg, #5c0fc2, #2050e5); /* Darker gradient on hover */
+  transform: scale(1.05);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Larger shadow on hover */
+}
+
+.btn:active {
+  background: linear-gradient(45deg, #4e0dac, #1b3fb8); /* Darker gradient on active */
+  transform: scale(1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Smaller shadow on active */
+}
