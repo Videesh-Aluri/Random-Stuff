@@ -1,0 +1,28 @@
+html{
+  min-height:300px ;
+  min-width:300px ;
+}
+body{
+    background-color: rgb(195, 149, 64);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+#board{
+ display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  width: 100px;
+  height: 100px;
+  border: 2px solid #333;
+}
+.BlackSpace{
+  background-color: black;
+  aspect-ratio: 1 / 1;
+
+}
+.WhiteSpace{
+    background-color: white;
+    aspect-ratio: 1 / 1;
+
+}
