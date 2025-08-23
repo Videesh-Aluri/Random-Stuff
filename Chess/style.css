@@ -19,10 +19,18 @@ body{
 .BlackSpace{
   background-color: black;
   aspect-ratio: 1 / 1;
-
+  color: white;
+font-size: 6px;
+align-items: center;
+text-align: start;
 }
 .WhiteSpace{
-    background-color: white;
+    background-color: rgb(174, 174, 174);
     aspect-ratio: 1 / 1;
-
+    font-size: 6px;
+    align-items: center;
+text-align: start;
+}
+img{
+    align-self: center;
 }
