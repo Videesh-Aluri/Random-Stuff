@@ -1,0 +1,57 @@
+body{
+    background-color: black;
+    color: white;
+}
+button{
+    background-color: darkgreen;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.gameContainer{
+    align-self: center;
+}
+.maze{
+    border: 5px solid darkgreen;
+    display: grid;
+    grid-template-columns: repeat(4156);
+    grid-template-rows: repeat(4156);
+    min-width: 977px; /* Increase the max-width to make the board bigger */
+    max-width: 1230px;
+    height: 100%; /* Increase the height to make the board bigger */
+    min-height: 977px; /* Increase the height to make the board bigger */
+    max-height: 1230px;
+}
+
+#mazeSpot{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px; /* Increase the font size */
+    text-align: center;
+    position: relative;
+    gap: 0px;
+    gap: 0%;
+}
+.wall{ background-color: darkgreen;}
+
+.player{
+    background-color: green;
+  min-width: 6px;
+  min-height: 6px;
+  font-size: 12px;
+  text-align: center;
+}
+.intendedpath{
+    background-color: blue;
+}
+.start{
+     background-color: blue;
+}
+
+.end{
+     background-color:red;
+}
+
