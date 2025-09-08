@@ -16,8 +16,8 @@ button{
 .maze{
     border: 5px solid darkgreen;
     display: grid;
-    grid-template-columns: repeat(4156);
-    grid-template-rows: repeat(4156);
+    grid-template-columns: repeat(144);
+    grid-template-rows: repeat(144);
     min-width: 977px; /* Increase the max-width to make the board bigger */
     max-width: 1230px;
     height: 100%; /* Increase the height to make the board bigger */
@@ -34,18 +34,18 @@ button{
     position: relative;
     gap: 0px;
     gap: 0%;
+    min-width: 6px;
+  min-height: 6px;
 }
 .wall{ background-color: darkgreen;}
 
 .player{
-    background-color: green;
+background-color: green;
   min-width: 6px;
   min-height: 6px;
-  font-size: 12px;
   text-align: center;
-}
-.intendedpath{
-    background-color: blue;
+  border: 0px;
+  padding: 0px;
 }
 .start{
      background-color: blue;

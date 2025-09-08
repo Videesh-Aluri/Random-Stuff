@@ -8,6 +8,7 @@ window.addEventListener("DOMContentLoaded", function () {
       spot.style.gridRow = row;
       if (col === 1 && row === 1) {
         spot.classList.add("start");
+        spot.classList.add("hastobeEmpty");
       } else if (col === 2 && row === 1) {
         spot.classList.add("hastobeEmpty");
       } else if (col === 2 && row === 2) {
@@ -22,6 +23,7 @@ window.addEventListener("DOMContentLoaded", function () {
         spot.classList.add("hastobeEmpty");
       } else if (col === 144 && row === 144) {
         spot.classList.add("end");
+        spot.classList.add("hastobeEmpty");
       } else if (col === 143 && row === 144) {
         spot.classList.add("hastobeEmpty");
       } else if (col === 142 && row === 144) {
@@ -41,15 +43,37 @@ window.addEventListener("DOMContentLoaded", function () {
       } else if (col === 141 && row === 141) {
         spot.classList.add("hastobeEmpty");
       }
+      // for (let q = 0; q <= 144; q++) {
+      //   if (col === q && row === 144) {
+      //     spot.classList.add("CloseToWall");
+      //   }
+      // }
+      // for (let q = 0; q <= 144; q++) {
+      //   if (col === 144 && row === q) {
+      //     spot.classList.add("CloseToWall");
+      //   }
+      // }
+      // for (let q = 0; q <= 144; q++) {
+      //   if (col === q && row === 1) {
+      //     spot.classList.add("CloseToWall");
+      //   }
+      // }
+      // for (let q = 0; q <= 144; q++) {
+      //   if (col === 1 && row === q) {
+      //     spot.classList.add("CloseToWall");
+      //   }
+      // }
       maze.appendChild(spot);
     }
   }
 });
-playerPosition = 0;
+let playerPosition = 0;
+
 function generateMaze() {
-  const Mazespaces = Array.from(document.querySelectorAll("#mazeSpot"));
+  const Mazespaces = document.querySelectorAll("#mazeSpot");
   Mazespaces.forEach((element) => {
     element.classList.remove("wall");
+    element.classList.remove("path");
   });
 
   Mazespaces.forEach((element) => {
@@ -59,15 +83,25 @@ function generateMaze() {
       if (
         element.classList.contains("start") ||
         element.classList.contains("end") ||
+        element.classList.contains("path") ||
         element.classList.contains("hastobeEmpty")
       ) {
         return;
       }
       console.log("wall added");
       element.classList.add("wall");
-    } else {
-      console.log("path added");
     }
+  });
+
+  Mazespaces.forEach((element1) => {
+    if (
+      element1.classList.contains("path") ||
+      element1.classList.contains("wall")
+    ) {
+      return;
+    }
+    console.log("path added");
+    element1.classList.add("path");
   });
 
   console.log("Maze generated");
@@ -77,6 +111,10 @@ function generateMaze() {
     playerElement.classList.add("player");
     board.children[playerPosition].appendChild(playerElement);
   }
+
+  playerPosition = 0;
+  const playerElement = document.querySelector(".player");
+  board.children[playerPosition].appendChild(playerElement);
 }
 
 document.addEventListener("keydown", (e) => {
@@ -84,15 +122,51 @@ document.addEventListener("keydown", (e) => {
   const playerElement = document.querySelector(".player");
   let key = e.key;
   if (key === "w") {
-    playerPosition -= 64;
+    if (
+      document
+        .getElementById("maze")
+        .children[playerPosition - 144].classList.contains("path")
+    ) {
+      playerPosition -= 144;
+    }
   } else if (key === "a") {
-    playerPosition -= 1;
+    if (
+      document
+        .getElementById("maze")
+        .children[playerPosition - 1].classList.contains("path")
+    ) {
+      if (
+        document
+          .getElementById("maze")
+          .children[playerPosition - 1].classList.contains("CloseToWall")
+      )
+        playerPosition -= 1;
+    }
   } else if (key === "s") {
-    playerPosition += 64;
+    if (
+      document
+        .getElementById("maze")
+        .children[playerPosition + 144].classList.contains("path")
+    ) {
+      playerPosition += 144;
+    }
   } else if (key === "d") {
-    playerPosition += 1;
+    if (
+      document
+        .getElementById("maze")
+        .children[playerPosition + 1].classList.contains("path")
+    ) {
+      playerPosition += 1;
+    }
   }
   board.children[playerPosition].appendChild(playerElement);
+  if (
+    document
+      .getElementById("maze")
+      .children[playerPosition].classList.contains("end")
+  ) {
+    alert("you beat the maze click Generate Maze to get new maze");
+  }
 });
 
 function resetMaze() {
