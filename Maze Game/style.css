@@ -38,6 +38,7 @@ button{
   min-height: 6px;
 }
 .wall{ background-color: darkgreen;}
+.wall2{background-color: black;}
 
 .player{
 background-color: green;

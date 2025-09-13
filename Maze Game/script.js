@@ -8,7 +8,6 @@ window.addEventListener("DOMContentLoaded", function () {
       spot.style.gridRow = row;
       if (col === 1 && row === 1) {
         spot.classList.add("start");
-        spot.classList.add("hastobeEmpty");
       } else if (col === 2 && row === 1) {
         spot.classList.add("hastobeEmpty");
       } else if (col === 2 && row === 2) {
@@ -23,7 +22,6 @@ window.addEventListener("DOMContentLoaded", function () {
         spot.classList.add("hastobeEmpty");
       } else if (col === 144 && row === 144) {
         spot.classList.add("end");
-        spot.classList.add("hastobeEmpty");
       } else if (col === 143 && row === 144) {
         spot.classList.add("hastobeEmpty");
       } else if (col === 142 && row === 144) {
@@ -70,6 +68,7 @@ window.addEventListener("DOMContentLoaded", function () {
 let playerPosition = 0;
 
 function generateMaze() {
+  document.getElementById("button").innerText = "Genrating Maze...";
   const Mazespaces = document.querySelectorAll("#mazeSpot");
   Mazespaces.forEach((element) => {
     element.classList.remove("wall");
@@ -89,14 +88,19 @@ function generateMaze() {
         return;
       }
       console.log("wall added");
-      element.classList.add("wall");
+
+      if (document.getElementById("Invis").checked === true) {
+        element.classList.add("wall2");
+      } else {
+        element.classList.add("wall");
+      }
     }
   });
-
   Mazespaces.forEach((element1) => {
     if (
       element1.classList.contains("path") ||
-      element1.classList.contains("wall")
+      element1.classList.contains("wall") ||
+      element1.classList.contains("wall2")
     ) {
       return;
     }
@@ -105,6 +109,8 @@ function generateMaze() {
   });
 
   console.log("Maze generated");
+  alert("Maze generated");
+  document.getElementById("button").innerText = "Generate Maze";
   const board = document.getElementById("maze");
   if (document.querySelectorAll(".player").length === 0) {
     const playerElement = document.createElement("div");
@@ -136,11 +142,11 @@ document.addEventListener("keydown", (e) => {
         .children[playerPosition - 1].classList.contains("path")
     ) {
       if (
-        document
-          .getElementById("maze")
-          .children[playerPosition - 1].classList.contains("CloseToWall")
-      )
+        board.children[playerPosition].style.gridColumn !== "1" &&
+        board.children[playerPosition - 1].style.gridColumn !== "144"
+      ) {
         playerPosition -= 1;
+      }
     }
   } else if (key === "s") {
     if (
@@ -156,7 +162,12 @@ document.addEventListener("keydown", (e) => {
         .getElementById("maze")
         .children[playerPosition + 1].classList.contains("path")
     ) {
-      playerPosition += 1;
+      if (
+        board.children[playerPosition].style.gridColumn !== "144" &&
+        board.children[playerPosition + 1].style.gridColumn !== "1"
+      ) {
+        playerPosition += 1;
+      }
     }
   }
   board.children[playerPosition].appendChild(playerElement);
