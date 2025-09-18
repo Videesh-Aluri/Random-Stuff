@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hangman Game</title>
+  <script src="script.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="hangman-wrapper">
+<button onclick="Game()" id="startButton" class="startButton">start</button>
+  <div class="hangman-container">
+
+    <div class="hangman-container">
+  <div class="gallows">
+    <div class="base"></div>
+    <div class="vertical-post"></div>
+    <div class="horizontal-beam"></div>
+    <div class="rope"></div>
+  </div>
+
+  <div class="figure" id="figure">
+    <div class="head" style="display: none;" id="head"></div>
+    <div class="body"style="display: none;" id="body"></div>
+    <div class="arm left" style="display: none;" id="arm left"></div>
+    <div class="arm right" style="display: none;" id="arm right"></div>
+    <div class="leg left" style="display: none;" id="leg left"></div>
+    <div class="leg right" style="display: none;" id="leg right"></div>
+  </div>
+  
+</div>
+   
+  </div>
+
+  
+  <input type="text" id="guessInput" class="guessInput" maxlength="1" placeholder="Enter a letter" />
+<button onclick="submitGuess()" id="guessbutton">Guess</button>
+<div id="wrongLetters" class="wrong-letters">
+  <div id="wrongLettersContainer">Incorrect letters:</div>
+</div>
+<div id="wordDisplay" class="word-box"></div>
+<h4>Used The English Open Word List (EOWL) for the word used in the game, and its only term of usage is the displaying of the following copyright notice</h4>
+<p>Copyright © J Ross Beresford 1993-1999. All Rights Reserved. The following restriction is placed on the use of this publication: if the UK Advanced Cryptics Dictionary is used in a software package or redistributed in any form, the copyright notice must be prominently displayed and the text of this document must be included verbatim.</p>
+
+
+
+
+
+
+</body>
+</html>
