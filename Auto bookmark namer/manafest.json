@@ -5,7 +5,7 @@
     "manifest_version": 3,
     "permissions": ["bookmarks", "activeTab", "scripting"],
     "background": {
-        "service_worker": "background.js"
+        "service_worker": "bookmark.js"
     },
     "action": {
         "default_title": "Auto Bookmark Namer"
