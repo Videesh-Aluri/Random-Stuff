@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Auto Bookmark Namer",
+  "version": "1.0",
+  "permissions": ["bookmarks", "activeTab", "scripting"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Auto Bookmark Namer"
+  }
+}

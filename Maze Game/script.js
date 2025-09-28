@@ -65,6 +65,8 @@ window.addEventListener("DOMContentLoaded", function () {
     }
   }
 });
+const maze = [];
+
 let playerPosition = 0;
 
 function generateMaze() {
@@ -104,12 +106,27 @@ function generateMaze() {
     ) {
       return;
     }
-    console.log("path added");
+
     element1.classList.add("path");
   });
 
   console.log("Maze generated");
   alert("Maze generated");
+
+  for (let i = 0; i < 144; i++) {
+    let mazerow = [];
+    mazerow.id = i;
+    for (let j = 0; j < 144; j++) {
+      let spot = document.getElementById("maze").children[i * 144 + j];
+      if (spot.classList.contains("wall") || spot.classList.contains("wall2")) {
+        mazerow.push(1);
+      } else {
+        mazerow.push(0);
+      }
+    }
+    maze.push(mazerow);
+  }
+
   document.getElementById("button").innerText = "Generate Maze";
   const board = document.getElementById("maze");
   if (document.querySelectorAll(".player").length === 0) {
