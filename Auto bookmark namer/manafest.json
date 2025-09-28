@@ -1,13 +1,17 @@
 {
-    "name": "Auto Bookmark Namer",
-    "description": "Automatically names bookmarks based on the page title",
-    "version": "1.0",
-    "manifest_version": 3,
-    "permissions": ["bookmarks", "activeTab", "scripting"],
-    "background": {
-        "service_worker": "bookmark.js"
-    },
-    "action": {
-        "default_title": "Auto Bookmark Namer"
-    }
+  "manifest_version": 3,
+  "name": "Auto Bookmark Namer",
+  "version": "1.0",
+  "description": "Automatically renames bookmarks based on page content.",
+  "permissions": [
+    "bookmarks",
+    "activeTab",
+    "scripting"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Auto Bookmark Namer"
+  }
 }
