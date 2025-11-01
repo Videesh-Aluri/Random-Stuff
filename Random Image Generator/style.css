@@ -1,0 +1,26 @@
+/* make the page fill the viewport so flex centering works */
+
+
+/* center the artboard horizontally and vertically */
+body {
+  display: flex;
+  align-items: center;      /* vertical centering */
+  justify-content: center;  /* horizontal centering */
+  min-height: 100vh;        /* robust viewport height */
+  box-sizing: border-box;
+}
+
+/* artboard: responsive, fixed aspect ratio, and centered */
+.artboard {
+  display: inline-grid;
+
+}
+.artPX {
+   display: flex;
+    position: relative;
+    gap: 0px;
+    gap: 0%;
+    min-width: 1px;
+  min-height: 1px;
+}
+ 
