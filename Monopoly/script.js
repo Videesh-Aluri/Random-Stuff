@@ -732,6 +732,9 @@ class Player {
     this.doblerent = false;
     this.inJail = 0;
     this.dobleroll = 0;
+    this.bot = false;
+    this.causeOfBankrupcy = 0;
+
     // house and hotels in possession
   }
 }
@@ -764,6 +767,9 @@ function move(player, spaces) {
       ).innerHTML += `<p>${player.name} collects $${bank.money} for passing GO.</p>`;
       bank.money = 0; // Bank money cannot go below 0
     }
+    document.getElementById(
+      `${player.name}Money`
+    ).innerText = `Money: ${player.money}`;
   }
 
   // Handle special spaces
@@ -1115,6 +1121,30 @@ function addPlayer() {
     playerCount++;
   }
 }
+botcount = 1;
+function addBot() {
+  if (playerCount === 8) {
+    alert("Max players reached");
+    return;
+  } else {
+    const playerForm = document.getElementById("player-form");
+    const playerInput = document.createElement("div");
+    playerInput.classList.add("player-input");
+    playerInput.innerHTML = `
+    <label for="player-name-${playerCount}">Bot ${botcount + 1} Name:</label>
+    <input type="text" id="player-name-${playerCount}" name="player-name-${playerCount}" value="Bot ${
+      botcount + 1
+    }">
+    <label for="player-color-${playerCount}">Color:</label>
+    <input type="color" id="player-color-${playerCount}" name="player-color-${playerCount}" value="#${Math.floor(
+      Math.random() * 16777215
+    ).toString(16)}">
+  `;
+    playerForm.insertBefore(playerInput, playerForm.children[playerCount]);
+    playerCount++;
+    botcount++;
+  }
+}
 function startGame() {
   let WIHIG = document.getElementById("WIHIG");
   for (let i = ChanceCards.length - 1; i > 0; i--) {
@@ -1133,6 +1163,10 @@ function startGame() {
     const playerName = document.getElementById(`player-name-${i}`).value;
     const playerColor = document.getElementById(`player-color-${i}`).value;
     players.push(new Player(playerName, playerColor));
+    if (playerName.startsWith("Bot")) {
+      players[i].bot = true;
+    }
+
     playerlist.innerHTML += `
     <div class="player">
     <h3 >${players[i].name}</h3>
@@ -1169,395 +1203,362 @@ function startGame() {
   document.getElementById("BankHotel").innerText = `Hotels: ${bank.Hotels}`;
 
   document.getElementById("player-selection").style.display = "none";
-  rollDice = document.getElementById("dice");
-  document.getElementById("Pay50").onclick = function () {
-    if (players[j].money >= 50) {
-      players[j].money -= 50;
-      bank.money += 50;
-      players[j].inJail = 0;
-      document.getElementById("Pay50").style.display = "none";
-      document.getElementById("UseGOFJRC").style.display = "none";
-    } else {
-      alert(`${players[j].name} can't pay the fee`);
-    }
-  };
-  document.getElementById("UseGOFJRC").onclick = function () {
-    if (players[j].getOutOfJailFreeCard > 0) {
-      players[j].getOutOfJailFreeCard -= 1;
-      players[j].inJail = 0;
-      document.getElementById("Pay50").style.display = "none";
-      document.getElementById("UseGOFJRC").style.display = "none";
-    } else {
-      alert("don't have any get out of jail free cards");
-    }
-  };
+
   WIHIG.innerHTML += `<p>${players[j].name} turn</p>`;
-  document.getElementById("dice").addEventListener("click", function () {
-    const propertySpaces = Array.from(document.querySelectorAll("#space"));
-    propertySpaces.forEach((space) => {
-      if (space.style.backgroundColor === "darkgreen") {
-        space.style.backgroundColor = "white";
+}
+
+function Rolldice() {
+  const propertySpaces = Array.from(document.querySelectorAll("#space"));
+  propertySpaces.forEach((space) => {
+    if (space.style.backgroundColor === "darkgreen") {
+      space.style.backgroundColor = "white";
+    }
+  });
+  document.getElementById("dice").style.display = "none";
+  document.getElementById("NextTurn").style.display = "inline-block";
+
+  //move player
+  console.log("players.length", players.length);
+  console.log("beforej", j);
+  console.log("beforej", players[j]);
+  dice1 = Math.floor(Math.random() * 6) + 1;
+  dice2 = Math.floor(Math.random() * 6) + 1;
+  console.log(players[j].dobleroll);
+  rolldice = dice1 + dice2;
+  if (dice1 === dice2) {
+    if (players[j].inJail === 0) {
+      players[j].dobleroll += 1;
+      if (properties[players[j].position] !== null) {
+        if (properties[players[j].position].owned === 0) {
+          auction(properties[players[j].position]);
+        }
       }
-    });
+    } else {
+      players[j].inJail = 0;
+      players[j].dobleroll = 0;
+    }
+  } else {
+    players[j].dobleroll = 0;
+  }
+  if (players[j].dobleroll === 3) {
+    players[j].dobleroll = 0;
+    players[j].inJail = 1;
+    players[j].position = 10;
     document.getElementById("dice").style.display = "none";
     document.getElementById("NextTurn").style.display = "inline-block";
+    WIHIG.innerHTML += `${players[j].name} got sent to jail`;
+  }
+  if (players[j].inJail === 4 && dice1 !== dice2) {
+    alert("you have to pay the $50 fee");
+    players[j].money -= 50;
+    WIHIG.innerHTML += `<p>${players[j].name} paid the 50$ fee to get out of jail</p>`;
+    players[j].inJail = 0;
+  }
+  WIHIG.innerHTML += `<p>${players[j].name} rolled a ${dice1} and a ${dice2} with $${players[j].money}</p>`;
+  console.log(
+    `${players[j].name} rolled a ${dice1} and a ${dice2} with $${players[j].money}`
+  );
+  if (players[j].inJail === 0) {
+    move(players[j], rolldice);
+  } else {
+    players[j].inJail += 1;
+  }
+  scrollWIHIGToBottom();
 
-    //move player
-    console.log("players.length", players.length);
-    console.log("beforej", j);
-    console.log("beforej", players[j]);
-    dice1 = Math.floor(Math.random() * 6) + 1;
-    dice2 = Math.floor(Math.random() * 6) + 1;
+  const newPosition = players[j].position;
+  board.children[newPosition].appendChild(
+    document.querySelector("#" + players[j].name.replace(" ", ""))
+  );
 
-    rolldice = dice1 + dice2;
-    if (dice1 === dice2) {
-      if (players[j].inJail === 0) {
-        players[j].dobleroll += 1;
-      } else {
-        players[j].inJail = 0;
-        players[j].dobleroll = 0;
-      }
-    } else {
-      players[j].dobleroll = 0;
-    }
-    if (players[j].dobleroll === 3) {
-      players[j].dobleroll = 0;
-      players[j].inJail = 1;
-      players[j].position = 10;
-      document.getElementById("dice").style.display = "none";
-      document.getElementById("NextTurn").style.display = "inline-block";
-      WIHIG.innerHTML += `${players[j].name} got sent to jail`;
-    }
-    if (players[j].inJail === 4 && dice1 !== dice2) {
-      alert("you have to pay the $50 fee");
-      players[j].money -= 50;
-      WIHIG.innerHTML += `<p>${players[j].name} paid the 50$ fee to get out of jail</p>`;
-      players[j].inJail = 0;
-    }
-    WIHIG.innerHTML += `<p>${players[j].name} rolled a ${dice1} and a ${dice2} with $${players[j].money}</p>`;
-    console.log(
-      `${players[j].name} rolled a ${dice1} and a ${dice2} with $${players[j].money}`
+  // buy property/pay rent
+  if (properties[newPosition] !== null) {
+    let propertyName = document.getElementById("propertyName");
+    let propertyPrice = document.getElementById("propertyPrice");
+    let propertyRent = document.getElementById("propertyRent");
+    let propertyRentWithcolorset = document.getElementById(
+      "propertyRentWithcolorset"
     );
-    if (players[j].inJail === 0) {
-      move(players[j], rolldice);
+    let propertyHouse1 = document.getElementById("propertyHouse1");
+    let propertyHouse2 = document.getElementById("propertyHouse2");
+    let propertyHouse3 = document.getElementById("propertyHouse3");
+    let propertyHouse4 = document.getElementById("propertyHouse4");
+    let propertyHotel = document.getElementById("propertyHotel");
+    // Property details
+    if (properties[newPosition].constructor.name === "Property") {
+      propertyName.innerHTML = properties[newPosition].name;
+      propertyPrice.innerHTML = "Price: " + properties[newPosition].price;
+      propertyRent.innerHTML = "Rent: " + properties[newPosition].rent[0];
+      propertyRentWithcolorset.innerHTML =
+        "Rent with color set: " + properties[newPosition].rent[1];
+      propertyHouse1.innerHTML = "House 1: " + properties[newPosition].rent[2];
+      propertyHouse2.innerHTML = "House 2: " + properties[newPosition].rent[3];
+      propertyHouse3.innerHTML = "House 3: " + properties[newPosition].rent[4];
+      propertyHouse4.innerHTML = "House 4: " + properties[newPosition].rent[5];
+      propertyHotel.innerHTML = "Hotel: " + properties[newPosition].rent[6];
+    } else if (properties[newPosition].constructor.name === "Utility") {
+      propertyName.innerHTML = properties[newPosition].name;
+      propertyPrice.innerHTML = "Price: " + properties[newPosition].price;
+      propertyRent.innerHTML = " ";
+      propertyRentWithcolorset.innerHTML = " ";
+      propertyHouse1.innerHTML =
+        "if one Utilty is owned rent is 4 times the amount shown on dice";
+      propertyHouse2.innerHTML =
+        "if both Utilty is owned rent is 10 times the amount shown on dice";
+      propertyHouse3.innerHTML = " ";
+      propertyHouse4.innerHTML = " ";
+      propertyHotel.innerHTML = " ";
+    } else if (properties[newPosition].constructor.name === "Railroad") {
+      propertyName.innerHTML = properties[newPosition].name;
+      propertyPrice.innerHTML = "Price: " + properties[newPosition].price;
+      propertyRent.innerHTML = " ";
+      propertyRentWithcolorset.innerHTML = " ";
+      propertyHouse1.innerHTML =
+        "if 1 Railroad is owned: " + properties[newPosition].rentadder[0];
+      propertyHouse2.innerHTML =
+        "if 2 Railroad is owned: " + properties[newPosition].rentadder[1];
+      propertyHouse3.innerHTML =
+        "if 3 Railroad is owned: " + properties[newPosition].rentadder[2];
+      propertyHouse4.innerHTML =
+        "if 4 Railroad is owned: " + properties[newPosition].rentadder[3];
+      propertyHotel.innerHTML = " ";
+    }
+    // buy property
+    if (properties[newPosition].owned === 0) {
+      document.getElementById("NextTurn").style.display = "none";
+
+      if (players[j].money >= properties[newPosition].price) {
+        enablebuy(newPosition);
+      } else {
+        document.getElementById("NextTurn").style.display = "none";
+      }
+      document.getElementById("Auction").style.display = "block";
+      document.getElementById("Auction").onclick = function () {
+        auction(properties[players[j].position]);
+      };
+      //pay rent
     } else {
-      players[j].inJail += 1;
+      if (properties[newPosition].owned === players[j]) {
+        return;
+      } else if (properties[newPosition].mortgaged === 1) {
+        return;
+      } else {
+        if (properties[newPosition].constructor.name === "Property") {
+          const colorGroups = [
+            "SaddleBrown",
+            "SkyBlue",
+            "DarkOrchid",
+            "Orange",
+            "Red",
+            "Yellow",
+            "Green",
+            "Blue",
+          ];
+          if (properties[newPosition].houseHotels === 0) {
+            // no houses or hotel rent
+            for (let m = 0; m < 9; m++) {
+              if (properties[newPosition].color === colorGroups[m]) {
+                if (
+                  colorGroups[m] === "SaddleBrown" ||
+                  colorGroups[m] === "Blue"
+                ) {
+                  if (
+                    properties[newPosition].owned.propertiesOwned[m].lenght ===
+                    2
+                  ) {
+                    players[j].money -= properties[newPosition].rent[1];
+                    properties[newPosition].owned.money +=
+                      properties[newPosition].rent[1];
+                    document.getElementById(
+                      `${players[j].name}Money`
+                    ).innerText = players[j].money;
+                    document.getElementById(
+                      `${properties[newPosition].owned.name}Money`
+                    ).innerText = properties[newPosition].owned.money;
+                    WIHIG.innerHTML += `<p>${players[j].name} pays $${properties[newPosition].rent[1]} of rent to ${properties[newPosition].owned.name} </p>`;
+                    players[j].causeOfBankrupcy = properties[newPosition].owned;
+                  } else {
+                    players[j].money -= properties[newPosition].rent[0];
+                    properties[newPosition].owned.money +=
+                      properties[newPosition].rent[0];
+                    document.getElementById(
+                      `${players[j].name}Money`
+                    ).innerText = players[j].money;
+                    document.getElementById(
+                      `${properties[newPosition].owned.name}Money`
+                    ).innerText = properties[newPosition].owned.money;
+                    WIHIG.innerHTML += `<p>${players[j].name} pays $${properties[newPosition].rent[0]} of rent to ${properties[newPosition].owned.name} </p>`;
+                    players[j].causeOfBankrupcy = properties[newPosition].owned;
+                  }
+                } else {
+                  if (
+                    properties[newPosition].owned.propertiesOwned[m].lenght ===
+                    3
+                  ) {
+                    players[j].money -= properties[newPosition].rent[1];
+                    properties[newPosition].owned.money +=
+                      properties[newPosition].rent[1];
+                    document.getElementById(
+                      `${players[j].name}Money`
+                    ).innerText = players[j].money;
+                    document.getElementById(
+                      `${properties[newPosition].owned.name}Money`
+                    ).innerText = properties[newPosition].owned.money;
+                    players[j].causeOfBankrupcy = properties[newPosition].owned;
+                    WIHIG.innerHTML += `<p>${players[j].name} pays $${properties[newPosition].rent[1]} of rent to ${properties[newPosition].owned.name} </p>`;
+                  } else {
+                    players[j].money -= properties[newPosition].rent[0];
+                    properties[newPosition].owned.money +=
+                      properties[newPosition].rent[0];
+                    document.getElementById(
+                      `${players[j].name}Money`
+                    ).innerText = players[j].money;
+                    document.getElementById(
+                      `${properties[newPosition].owned.name}Money`
+                    ).innerText = properties[newPosition].owned.money;
+                    players[j].causeOfBankrupcy = properties[newPosition].owned;
+                    WIHIG.innerHTML += `<p>${players[j].name} pays $${properties[newPosition].rent[0]} of rent to ${properties[newPosition].owned.name} </p>`;
+                  }
+                }
+                break; // Exit the loop after finding the color group
+              }
+            }
+            // houses or hotel rent
+          } else if (properties[newPosition].houseHotels > 0) {
+            for (let m = 2; m < 7; m++) {
+              if (properties[newPosition].houseHotels === m - 1) {
+                players[j].money -= properties[newPosition].rent[m];
+                properties[newPosition].owned.money +=
+                  properties[newPosition].rent[m + 1];
+                document.getElementById(`${players[j].name}Money`).innerText =
+                  players[j].money;
+                document.getElementById(
+                  `${properties[newPosition].owned.name}Money`
+                ).innerText = properties[newPosition].owned.money;
+                console.log(
+                  `${players[j].name} pays $${properties[newPosition].rent[m]} of rent to ${properties[newPosition].owned.name}`
+                );
+                players[j].causeOfBankrupcy = properties[newPosition].owned;
+                WIHIG.innerHTML += `<p>${players[j].name} pays $${properties[newPosition].rent[m]} of rent to ${properties[newPosition].owned.name} </p>`;
+                break; // Exit the loop after finding the rent
+              }
+            }
+          }
+        } else if (properties[newPosition].constructor.name === "Railroad") {
+          let pay = calculateRailroadRent(
+            properties[newPosition],
+            properties[newPosition].owned.RailRoadsOwned.length
+          );
+          if (players[j].doblerent === true) {
+            pay *= 2;
+          }
+          players[j].money -= pay;
+          properties[newPosition].owned.money += pay;
+          document.getElementById(`${players[j].name}Money`).innerText =
+            players[j].money;
+          document.getElementById(
+            `${properties[newPosition].owned.name}Money`
+          ).innerText = properties[newPosition].owned.money;
+          players[j].causeOfBankrupcy = properties[newPosition].owned;
+          WIHIG.innerHTML += `<p>${players[j].name} pays $${pay} of rent to ${properties[newPosition].owned.name}</p>`;
+        } else if (properties[newPosition].constructor.name === "Utility") {
+          let pay = calculateUtilityRent(
+            properties[newPosition],
+            rolldice,
+            properties[newPosition].owned.UtilitiesOwned.length
+          );
+          if (players[j].doblerent === true) {
+            pay *= 10;
+          }
+          players[j].money -= pay;
+          properties[newPosition].owned.money += pay;
+          document.getElementById(`${players[j].name}Money`).innerText =
+            players[j].money;
+          document.getElementById(
+            `${properties[newPosition].owned.name}Money`
+          ).innerText = properties[newPosition].owned.money;
+          players[j].causeOfBankrupcy = properties[newPosition].owned;
+          WIHIG.innerHTML += `<p>${players[j].name} pays $${pay} of rent to ${properties[newPosition].owned.name}</p>`;
+        }
+        players[j].doblerent = false;
+      }
     }
     scrollWIHIGToBottom();
+  }
+  if (players[j].dobleroll > 0) {
+    document.getElementById("dice").style.display = "inline-block";
+    document.getElementById("NextTurn").style.display = "none";
+  } else {
+    document.getElementById("dice").style.display = "none";
+    document.getElementById("NextTurn").style.display = "inline-block";
+  }
+  if (players[j].money < 0) {
+    document.getElementById("declareBankrupcy").style.display = "inline-block";
+    document.getElementById("NoLongerindebt").style.display = "inline-block";
+    document.getElementById("dice").style.display = "none";
+    document.getElementById("NextTurn").style.display = "none";
+  }
+  document.getElementById("BankMoney").innerText = `Money: ${bank.money}`;
+  document.getElementById("BankHouse").innerText = `Houses: ${bank.Houses}`;
+  document.getElementById("BankHotel").innerText = `Hotels: ${bank.Hotels}`;
+}
 
-    const newPosition = players[j].position;
-    board.children[newPosition].appendChild(
-      document.querySelector("#" + players[j].name.replace(" ", ""))
-    );
+function Pay50() {
+  if (players[j].money >= 50) {
+    players[j].money -= 50;
+    bank.money += 50;
+    players[j].inJail = 0;
+    document.getElementById("Pay50").style.display = "none";
+    document.getElementById("UseGOFJRC").style.display = "none";
+  } else {
+    alert(`${players[j].name} can't pay the fee`);
+  }
+}
+function UseGOFJRC() {
+  if (players[j].getOutOfJailFreeCard > 0) {
+    players[j].getOutOfJailFreeCard -= 1;
+    players[j].inJail = 0;
+    document.getElementById("Pay50").style.display = "none";
+    document.getElementById("UseGOFJRC").style.display = "none";
+  } else {
+    alert("don't have any get out of jail free cards");
+  }
+}
 
-    // buy property/pay rent
-    if (properties[newPosition] !== null) {
-      let propertyName = document.getElementById("propertyName");
-      let propertyPrice = document.getElementById("propertyPrice");
-      let propertyRent = document.getElementById("propertyRent");
-      let propertyRentWithcolorset = document.getElementById(
-        "propertyRentWithcolorset"
-      );
-      let propertyHouse1 = document.getElementById("propertyHouse1");
-      let propertyHouse2 = document.getElementById("propertyHouse2");
-      let propertyHouse3 = document.getElementById("propertyHouse3");
-      let propertyHouse4 = document.getElementById("propertyHouse4");
-      let propertyHotel = document.getElementById("propertyHotel");
-      // Property details
-      if (properties[newPosition].constructor.name === "Property") {
-        propertyName.innerHTML = properties[newPosition].name;
-        propertyPrice.innerHTML = "Price: " + properties[newPosition].price;
-        propertyRent.innerHTML = "Rent: " + properties[newPosition].rent[0];
-        propertyRentWithcolorset.innerHTML =
-          "Rent with color set: " + properties[newPosition].rent[1];
-        propertyHouse1.innerHTML =
-          "House 1: " + properties[newPosition].rent[2];
-        propertyHouse2.innerHTML =
-          "House 2: " + properties[newPosition].rent[3];
-        propertyHouse3.innerHTML =
-          "House 3: " + properties[newPosition].rent[4];
-        propertyHouse4.innerHTML =
-          "House 4: " + properties[newPosition].rent[5];
-        propertyHotel.innerHTML = "Hotel: " + properties[newPosition].rent[6];
-      } else if (properties[newPosition].constructor.name === "Utility") {
-        propertyName.innerHTML = properties[newPosition].name;
-        propertyPrice.innerHTML = "Price: " + properties[newPosition].price;
-        propertyRent.innerHTML = " ";
-        propertyRentWithcolorset.innerHTML = " ";
-        propertyHouse1.innerHTML =
-          "if one Utilty is owned rent is 4 times the amount shown on dice";
-        propertyHouse2.innerHTML =
-          "if both Utilty is owned rent is 10 times the amount shown on dice";
-        propertyHouse3.innerHTML = " ";
-        propertyHouse4.innerHTML = " ";
-        propertyHotel.innerHTML = " ";
-      } else if (properties[newPosition].constructor.name === "Railroad") {
-        propertyName.innerHTML = properties[newPosition].name;
-        propertyPrice.innerHTML = "Price: " + properties[newPosition].price;
-        propertyRent.innerHTML = " ";
-        propertyRentWithcolorset.innerHTML = " ";
-        propertyHouse1.innerHTML =
-          "if 1 Railroad is owned: " + properties[newPosition].rentadder[0];
-        propertyHouse2.innerHTML =
-          "if 2 Railroad is owned: " + properties[newPosition].rentadder[1];
-        propertyHouse3.innerHTML =
-          "if 3 Railroad is owned: " + properties[newPosition].rentadder[2];
-        propertyHouse4.innerHTML =
-          "if 4 Railroad is owned: " + properties[newPosition].rentadder[3];
-        propertyHotel.innerHTML = " ";
-      }
-      // buy property
-      if (properties[newPosition].owned === 0) {
-        document.getElementById("NextTurn").style.display = "none";
+function declareBankrupcy() {
+  removePlayer();
+  document.getElementById("NextTurn").style.display = "inline-block";
+}
 
-        if (players[j].money >= properties[newPosition].price) {
-          enablebuy(newPosition);
-        } else {
-          document.getElementById("NextTurn").style.display = "none";
-        }
-
-        //pay rent
-      } else {
-        if (properties[newPosition].owned === players[j]) {
-          return;
-        } else if (properties[newPosition].mortgaged === 1) {
-          return;
-        } else {
-          if (properties[newPosition].constructor.name === "Property") {
-            const colorGroups = [
-              "SaddleBrown",
-              "SkyBlue",
-              "DarkOrchid",
-              "Orange",
-              "Red",
-              "Yellow",
-              "Green",
-              "Blue",
-            ];
-            if (properties[newPosition].houseHotels === 0) {
-              // no houses or hotel rent
-              for (let m = 0; m < 9; m++) {
-                if (properties[newPosition].color === colorGroups[m]) {
-                  if (
-                    colorGroups[m] === "SaddleBrown" ||
-                    colorGroups[m] === "Blue"
-                  ) {
-                    if (
-                      properties[newPosition].owned.propertiesOwned[m]
-                        .lenght === 2
-                    ) {
-                      players[j].money -= properties[newPosition].rent[1];
-                      properties[newPosition].owned.money +=
-                        properties[newPosition].rent[1];
-                      document.getElementById(
-                        `${players[j].name}Money`
-                      ).innerText = players[j].money;
-                      document.getElementById(
-                        `${properties[newPosition].owned.name}Money`
-                      ).innerText = properties[newPosition].owned.money;
-                      WIHIG.innerHTML += `<p>${players[j].name} pays ${properties[newPosition].rent[1]} of rent to ${properties[newPosition].owned.name} </p>`;
-                      players[j].causeOfBankrupcy =
-                        properties[newPosition].owned;
-                    } else {
-                      players[j].money -= properties[newPosition].rent[0];
-                      properties[newPosition].owned.money +=
-                        properties[newPosition].rent[0];
-                      document.getElementById(
-                        `${players[j].name}Money`
-                      ).innerText = players[j].money;
-                      document.getElementById(
-                        `${properties[newPosition].owned.name}Money`
-                      ).innerText = properties[newPosition].owned.money;
-                      WIHIG.innerHTML += `<p>${players[j].name} pays ${properties[newPosition].rent[0]} of rent to ${properties[newPosition].owned.name} </p>`;
-                      players[j].causeOfBankrupcy =
-                        properties[newPosition].owned;
-                    }
-                  } else {
-                    if (
-                      properties[newPosition].owned.propertiesOwned[m]
-                        .lenght === 3
-                    ) {
-                      players[j].money -= properties[newPosition].rent[1];
-                      properties[newPosition].owned.money +=
-                        properties[newPosition].rent[1];
-                      document.getElementById(
-                        `${players[j].name}Money`
-                      ).innerText = players[j].money;
-                      document.getElementById(
-                        `${properties[newPosition].owned.name}Money`
-                      ).innerText = properties[newPosition].owned.money;
-                      players[j].causeOfBankrupcy =
-                        properties[newPosition].owned;
-                      WIHIG.innerHTML += `<p>${players[j].name} pays ${properties[newPosition].rent[1]} of rent to ${properties[newPosition].owned.name} </p>`;
-                    } else {
-                      players[j].money -= properties[newPosition].rent[0];
-                      properties[newPosition].owned.money +=
-                        properties[newPosition].rent[0];
-                      document.getElementById(
-                        `${players[j].name}Money`
-                      ).innerText = players[j].money;
-                      document.getElementById(
-                        `${properties[newPosition].owned.name}Money`
-                      ).innerText = properties[newPosition].owned.money;
-                      players[j].causeOfBankrupcy =
-                        properties[newPosition].owned;
-                      WIHIG.innerHTML += `<p>${players[j].name} pays ${properties[newPosition].rent[0]} of rent to ${properties[newPosition].owned.name} </p>`;
-                    }
-                  }
-                  break; // Exit the loop after finding the color group
-                }
-              }
-              // houses or hotel rent
-            } else if (properties[newPosition].houseHotels > 0) {
-              for (let m = 2; m < 7; m++) {
-                if (properties[newPosition].houseHotels === m - 1) {
-                  players[j].money -= properties[newPosition].rent[m];
-                  properties[newPosition].owned.money +=
-                    properties[newPosition].rent[m + 1];
-                  document.getElementById(`${players[j].name}Money`).innerText =
-                    players[j].money;
-                  document.getElementById(
-                    `${properties[newPosition].owned.name}Money`
-                  ).innerText = properties[newPosition].owned.money;
-                  console.log(
-                    `${players[j].name} pays $${properties[newPosition].rent[m]} of rent to ${properties[newPosition].owned.name}`
-                  );
-                  players[j].causeOfBankrupcy = properties[newPosition].owned;
-                  WIHIG.innerHTML += `<p>${players[j].name} pays ${properties[newPosition].rent[m]} of rent to ${properties[newPosition].owned.name} </p>`;
-                  break; // Exit the loop after finding the rent
-                }
-              }
-            }
-          } else if (properties[newPosition].constructor.name === "Railroad") {
-            let pay = calculateRailroadRent(
-              properties[newPosition],
-              properties[newPosition].owned.RailRoadsOwned.length
-            );
-            if (players[j].doblerent === true) {
-              pay *= 2;
-            }
-            players[j].money -= pay;
-            properties[newPosition].owned.money += pay;
-            document.getElementById(`${players[j].name}Money`).innerText =
-              players[j].money;
-            document.getElementById(
-              `${properties[newPosition].owned.name}Money`
-            ).innerText = properties[newPosition].owned.money;
-            players[j].causeOfBankrupcy = properties[newPosition].owned;
-            WIHIG.innerHTML += `<p>${players[j].name} paid ${pay} to ${properties[newPosition].owned.name}</p>`;
-          } else if (properties[newPosition].constructor.name === "Utility") {
-            let pay = calculateUtilityRent(
-              properties[newPosition],
-              rolldice,
-              properties[newPosition].owned.UtilitiesOwned.length
-            );
-            if (players[j].doblerent === true) {
-              pay *= 10;
-            }
-            players[j].money -= pay;
-            properties[newPosition].owned.money += pay;
-            document.getElementById(`${players[j].name}Money`).innerText =
-              players[j].money;
-            document.getElementById(
-              `${properties[newPosition].owned.name}Money`
-            ).innerText = properties[newPosition].owned.money;
-            players[j].causeOfBankrupcy = properties[newPosition].owned;
-            WIHIG.innerHTML += `<p>${players[j].name} pays ${pay} of rent to ${properties[newPosition].owned.name}</p>`;
-          }
-          players[j].doblerent = false;
-        }
-      }
-      scrollWIHIGToBottom();
-    }
-    if (players[j].dobleroll > 0 && players[j].inJail) {
+function NoLongerindebt() {
+  if (players[j].money >= 0) {
+    document.getElementById("NoLongerindebt").style.display = "none";
+    document.getElementById("declareBankrupcy").style.display = "none";
+    if (players[j].dobleroll > 0) {
       document.getElementById("dice").style.display = "inline-block";
       document.getElementById("NextTurn").style.display = "none";
     } else {
       document.getElementById("dice").style.display = "none";
       document.getElementById("NextTurn").style.display = "inline-block";
     }
-    if (players[j].money < 0) {
-      document.getElementById("declareBankrupcy").style.display =
-        "inline-block";
-      document.getElementById("NoLongerindebt").style.display = "inline-block";
-      document.getElementById("dice").style.display = "none";
-      document.getElementById("NextTurn").style.display = "none";
-    }
-    document.getElementById("BankMoney").innerText = `Money: ${bank.money}`;
-    document.getElementById("BankHouse").innerText = `Houses: ${bank.Houses}`;
-    document.getElementById("BankHotel").innerText = `Hotels: ${bank.Hotels}`;
-  });
+  } else {
+    alert("you still owe money");
+  }
+}
 
-  let NextTurn = document.getElementById("NextTurn");
-  NextTurn.addEventListener("click", function () {
-    if (properties[players[j].position] !== null) {
-      if (properties[players[j].position].owned === 0) {
-        auction(properties[players[j].position]);
-      }
-    }
-    if (players[j].money < 0) {
-      removePlayer();
-    }
-    //move on to next player
-    if (players.length === 1) {
-      alert(`${players[j].name} wins`);
-      location.reload();
-    } else {
-      players[j].causeOfBankrupcy = 0;
-      nexturn();
-    }
-    WIHIG.innerHTML += `${players[j].name} turn`;
-    if (players[j].inJail >= 1) {
-      document.getElementById("Pay50").style.display = "inline-block";
-      document.getElementById("UseGOFJRC").style.display = "inline-block";
-    } else {
-      document.getElementById("Pay50").style.display = "none";
-      document.getElementById("UseGOFJRC").style.display = "none";
-    }
-
-    document.getElementById("dice").style.display = "inline-block";
-    NextTurn.style.display = "none";
-    scrollWIHIGToBottom();
-  });
-  document
-    .getElementById("declareBankrupcy")
-    .addEventListener("click", function () {
-      removePlayer();
-      NextTurn.style.display = "inline-block";
-    });
-  document
-    .getElementById("NoLongerindebt")
-    .addEventListener("click", function () {
-      if (players[j].money >= 0) {
-        document.getElementById("NoLongerindebt").style.display = "none";
-        document.getElementById("declareBankrupcy").style.display = "none";
-        if (players[j].dobleroll > 0) {
-          document.getElementById("dice").style.display = "inline-block";
-          document.getElementById("NextTurn").style.display = "none";
-        } else {
-          document.getElementById("dice").style.display = "none";
-          document.getElementById("NextTurn").style.display = "inline-block";
-        }
-      } else {
-        alert("you still owe money");
-      }
-    });
-
-  document.getElementById("Gameinfo").addEventListener("click", function () {
-    document.getElementById("WIHIG").style.display = "inline-block";
-    document.getElementById("property-actions").style.display = "none";
-    document.getElementById("tradecontainer").style.display = "none";
-  });
-  document.getElementById("Buy/selling").addEventListener("click", function () {
-    document.getElementById("WIHIG").style.display = "none";
-    document.getElementById("property-actions").style.display = "inline-block";
-    document.getElementById("tradecontainer").style.display = "none";
-  });
-  document.getElementById("Trading").addEventListener("click", function () {
-    document.getElementById("WIHIG").style.display = "none";
-    document.getElementById("property-actions").style.display = "none";
-    document.getElementById("tradecontainer").style.display = "inline-block";
-  });
+function Gameinfo() {
+  document.getElementById("WIHIG").style.display = "inline-block";
+  document.getElementById("property-actions").style.display = "none";
+  document.getElementById("tradecontainer").style.display = "none";
+}
+function BuyingSelling() {
+  document.getElementById("WIHIG").style.display = "none";
+  document.getElementById("property-actions").style.display = "inline-block";
+  document.getElementById("tradecontainer").style.display = "none";
+}
+function Trading() {
+  document.getElementById("WIHIG").style.display = "none";
+  document.getElementById("property-actions").style.display = "none";
+  document.getElementById("tradecontainer").style.display = "inline-block";
 }
 function removePlayer() {
   p = 1;
@@ -1661,6 +1662,36 @@ function removePlayer() {
   scrollWIHIGToBottom();
   document.getElementById("BankMoney").innerText = bank.money;
 }
+function RunNextTurn() {
+  if (properties[players[j].position] !== null) {
+    if (properties[players[j].position].owned === 0) {
+      auction(properties[players[j].position]);
+    }
+  }
+  if (players[j].money < 0) {
+    removePlayer();
+  }
+  //move on to next player
+  if (players.length === 1) {
+    alert(`${players[j].name} wins`);
+    location.reload();
+  } else {
+    players[j].causeOfBankrupcy = 0;
+    nexturn();
+  }
+  WIHIG.innerHTML += `${players[j].name} turn`;
+  if (players[j].inJail >= 1) {
+    document.getElementById("Pay50").style.display = "inline-block";
+    document.getElementById("UseGOFJRC").style.display = "inline-block";
+  } else {
+    document.getElementById("Pay50").style.display = "none";
+    document.getElementById("UseGOFJRC").style.display = "none";
+  }
+
+  document.getElementById("dice").style.display = "inline-block";
+  NextTurn.style.display = "none";
+  scrollWIHIGToBottom();
+}
 function nexturn() {
   if (j >= players.length - 1) {
     j = 0;
@@ -1671,6 +1702,9 @@ function nexturn() {
     console.log(`${players[j].name}'s turn`);
   }
   console.log("afterj", j);
+  if (players[j].bot === true) {
+    Botrules();
+  }
 }
 async function auction(property) {
   let bid = document.getElementById("bid");
@@ -1702,11 +1736,11 @@ async function auction(property) {
 
   while (activePlayers.length > 1) {
     for (let i = 0; i < activePlayers.length && activePlayers.length > 1; i++) {
+      bid.value = "";
       let player = activePlayers[i];
       console.log(`${player.name}'s turn to bid`);
       currentbidder.innerHTML = `${player.name}`;
 
-      let actionTaken = false;
       bidInput.onclick = function () {
         bidOffered = parseInt(bid.value);
         if (bidOffered <= player.money) {
@@ -1733,8 +1767,28 @@ async function auction(property) {
         actionTaken = true;
       };
       Pass.onclick = function () {};
-
-      await waitForAnyClick("stepBtn");
+      if (player.bot === true) {
+        if (player.money >= property.price + 100) {
+          if (player.money >= highestBid + 100) {
+            if (property.price > highestBid) {
+              bid.value =
+                Math.floor(Math.random() * (property.price - highestBid)) +
+                highestBid;
+              bidInput.click();
+            } else {
+              exit.click();
+            }
+          } else {
+            exit.click();
+          }
+        } else {
+          exit.click();
+        }
+        actionTaken = true;
+        i++;
+      } else {
+        await waitForAnyClick("stepBtn");
+      }
     }
   }
 
@@ -1795,6 +1849,7 @@ async function auction(property) {
   document.getElementById("auctioncontainer").style.display = "none";
   scrollWIHIGToBottom();
   document.getElementById("BankMoney").innerText = `Money: ${bank.money}`;
+  document.getElementById("Auction").style.display = "none";
 }
 function enablebuy(newPosition) {
   let Buy = document.getElementById("Buy");
@@ -1860,6 +1915,7 @@ function buy(newPosition) {
 
   scrollWIHIGToBottom();
   document.getElementById("BankMoney").innerText = `Money: ${bank.money}`;
+  document.getElementById("Auction").style.display = "none";
 }
 function buyHouse() {
   // Logic for buying a house
@@ -2215,12 +2271,14 @@ function updateDropdown1(dropdown1) {
     if (dropdown1.selectedOptions[0].innerText === players[i].name) {
       for (let m = 0; m < players[i].propertiesOwned.length; m++) {
         for (let n = 0; n < players[i].propertiesOwned[m].length; n++) {
-          document.getElementById("trade-properties").innerHTML += `<label>
+          if (players[i].propertiesOwned[m][n].houseHotels === 0) {
+            document.getElementById("trade-properties").innerHTML += `<label>
                 <input type="checkbox" id="${players[i].propertiesOwned[m][
                   n
                 ].name.replace(" ", "")}" name="myCheckbox">
                 ${players[i].propertiesOwned[m][n].name}
               </label>`;
+          }
         }
       }
       for (let m = 0; m < players[i].RailRoadsOwned.length; m++) {
@@ -2250,12 +2308,14 @@ function updateDropdown2(dropdown2) {
     if (dropdown2.selectedOptions[0].innerText === players[i].name) {
       for (let m = 0; m < players[i].propertiesOwned.length; m++) {
         for (let n = 0; n < players[i].propertiesOwned[m].length; n++) {
-          document.getElementById("trade-properties2").innerHTML += `<label>
+          if (players[i].propertiesOwned[m][n].houseHotels === 0) {
+            document.getElementById("trade-properties2").innerHTML += `<label>
                 <input type="checkbox" id="${players[i].propertiesOwned[m][
                   n
                 ].name.replace(" ", "")}" name="myCheckbox2">
                 ${players[i].propertiesOwned[m][n].name}
               </label>`;
+          }
         }
       }
       for (let m = 0; m < players[i].RailRoadsOwned.length; m++) {
@@ -2517,4 +2577,131 @@ function CIPINB(player) {
       document.getElementById("NextTurn").style.display = "inline-block";
     }
   }
+}
+function Botrules() {
+  // Jail rules
+  if (players[j].inJail > 0) {
+    if (players[j].GetOutofJailFreeCards > 0) {
+      UseGOFJRC();
+      Rolldice();
+    } else if (players[j].money >= 50) {
+      Pay50();
+      Rolldice();
+    } else {
+      Rolldice();
+    }
+  } else {
+    Rolldice();
+  }
+  // Buy property
+  if (properties[players[j].position] !== null) {
+    if (properties[players[j].position].owned === 0) {
+      if (players[j].money >= properties[players[j].position].price + 100) {
+        buy(players[j].position);
+      } else {
+        auction();
+      }
+    }
+  }
+  // Buy houses and hotels
+  for (let m = 0; m < players[j].propertiesOwned.length; m++) {
+    for (let n = 0; n < players[j].propertiesOwned[m].length; n++) {
+      if (m === 0 || m === 7) {
+        if (players[j].propertiesOwned[m].length === 2) {
+          if (players[j].propertiesOwned[m][n].houseHotels < 4) {
+            if (
+              players[j].money >=
+              players[j].propertiesOwned[m][n].houseHotelsPrice <=
+              players[j].money + 200
+            ) {
+              buyHouse();
+            }
+          } else if (players[j].propertiesOwned[m][n].houseHotels === 4) {
+            if (
+              players[j].money >=
+              players[j].propertiesOwned[m][n].houseHotelsPrice <=
+              players[j].money + 200
+            ) {
+              buyHotel();
+            }
+          }
+        }
+      } else {
+        if (players[j].propertiesOwned[m].length === 3) {
+          if (players[j].propertiesOwned[m][n].houseHotels < 4) {
+            if (
+              players[j].money >=
+              players[j].propertiesOwned[m][n].houseHotelsPrice <=
+              players[j].money + 200
+            ) {
+              buyHouse();
+            }
+          } else if (players[j].propertiesOwned[m][n].houseHotels === 4) {
+            if (
+              players[j].money >=
+              players[j].propertiesOwned[m][n].houseHotelsPrice <=
+              players[j].money + 200
+            ) {
+              buyHotel();
+            }
+          }
+        }
+      }
+    }
+  }
+  // tradeing
+  for (let m = 0; m < players.length; m++) {
+    if (m !== j) {
+      for (let o = 0; m < players[j].propertiesOwned.length; o++) {
+        for (let p = 0; n < players[j].propertiesOwned[m].length; p++) {
+          if (o === 0 || o === 7) {
+            if (players[j].propertiesOwned[o].length === 1) {
+              if (players[m].propertiesOwned[o][0] !== undefined) {
+                if (
+                  players[j].propertiesOwned[o][0].name !==
+                  players[m].propertiesOwned[o][0].name
+                ) {
+                  Trading();
+                  document.getElementById("tradeplayer").value =
+                    players[j].name;
+                  document.getElementById("tradeplayer2").value =
+                    players[m].name;
+                  updateDropdown1(document.getElementById("tradeplayer"));
+                  updateDropdown2(document.getElementById("tradeplayer2"));
+                  document.getElementById(
+                    players[j].propertiesOwned[o][0].name
+                  ).checked = true;
+                  document.getElementById(
+                    players[m].propertiesOwned[o][0].name
+                  ).checked = true;
+                }
+                offerTrade();
+              } else {
+                Trading();
+                document.getElementById("tradeplayer").value = players[j].name;
+                document.getElementById("tradeplayer2").value = players[m].name;
+                updateDropdown1(document.getElementById("tradeplayer"));
+                updateDropdown2(document.getElementById("tradeplayer2"));
+                document.getElementById(
+                  players[m].propertiesOwned[o][0].name
+                ).checked = true;
+                if (
+                  players[j].money >=
+                  players[m].propertiesOwned[o][0].price +
+                    players[m].propertiesOwned[o][0].price / 2 +
+                    100
+                ) {
+                  document.getElementById("trade-money").value =
+                    players[m].propertiesOwned[o][0].price +
+                    players[m].propertiesOwned[o][0].price / 2;
+                  offerTrade();
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  RunNextTurn();
 }

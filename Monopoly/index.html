@@ -13,7 +13,8 @@
   
   <div id="player-selection">
     <h2>Player Selection</h2>
-    <button type="button" onclick="addPlayer()">Add Player</button>
+      <button type="button" onclick="addPlayer()">Add Player</button>
+      <button type="button" onclick="addBot()">Add Bot</button>
       <button type="button" onclick="startGame()">Start Game</button>
     <form id="player-form">
       <div class="player-input">
@@ -138,7 +139,7 @@
       </div>
       <div class="space" onmouseover="document.getElementById('hover-img12').style.display='block'" onmouseout="document.getElementById('hover-img12').style.display='none'" place=12 id="space" style="grid-column: 11; grid-row: 3;" onclick="this.style.backgroundColor = 'darkgreen';">
         <img id="hover-img12" src="MonopolyPropertyImages/ElectricCompany.jpg" alt="Preview" style="display:none; position:absolute; right:110px; top: -90px;   max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
-        <div class="color-banner"></div>
+        <div class="mortgage-banner" id="mortgage-12">Not Mortgaged</div>
         Electric Company
         <br>
         150
@@ -276,7 +277,6 @@
       </div>
       <div class="space" onmouseover="document.getElementById('hover-img28').style.display='block'" onmouseout="document.getElementById('hover-img28').style.display='none'" place=28 id="space" style="grid-column: 3; grid-row: 11;" onclick="this.style.backgroundColor = 'darkgreen';">
         <img id="hover-img28" src="MonopolyPropertyImages/WaterWorks.jpg" alt="Preview" style="display:none; position:absolute; bottom:90px; max-width:200px; border:2px solid #333; background:#fff; z-index:1000;" />
-        <div class="color-banner"></div>
         <div class="mortgage-banner" id="mortgage-28">Not Mortgaged</div>
         Water Works
         <br>
@@ -373,11 +373,11 @@
       </div>
        <div class="center">
         <div class="property-container">
-          <button id="Gameinfo">Game info</button> <button id="Buy/selling">Buy/selling</button> <button id="Trading">Trading</button>
+          <button id="Gameinfo" onclick="Gameinfo()">Game info</button> <button id="Buy/selling" onclick="BuyingSelling()">Buy/selling</button> <button id="Trading" onclick="Trading()">Trading</button>
           <br>
-          <button id="dice">Roll dice</button> <button id="NextTurn" style="display: none;">Next turn</button>
+          <button id="dice" onclick="Rolldice()">Roll dice</button> <button id="NextTurn" style="display: none;" onclick="RunNextTurn()">Next turn</button>
           <br>
-          <button id="Pay50" style="display: none;">Pay 50$</button> <button id="UseGOFJRC" style="display: none;">Use get out of jail free card</button>
+          <button id="Pay50" style="display: none;" onclick="Pay50()">Pay 50$</button> <button id="UseGOFJRC" style="display: none;" onclick="UseGOFJRC()">Use get out of jail free card</button>
         </div>
         <div id="property-actions" class="property-container" style="display: none;">
           <h2>Manage Properties</h2>
@@ -391,8 +391,8 @@
         
             <br>
           
-            <button id="declareBankrupcy" style="display:none;">Declare bankrupcy</button>
-            <button id="NoLongerindebt" style="display: none;">No longer in debt</button>
+            <button id="declareBankrupcy" style="display:none;" onclick="declareBankrupcy()">Declare bankrupcy</button>
+            <button id="NoLongerindebt" style="display: none;" onclick="NoLongerindebt()">No longer in debt</button>
             
             
         </div>
@@ -487,6 +487,7 @@
           <p id="propertyHouse4">House 4:</p>
           <p id="propertyHotel">Hotel:</p>
           <button id="Buy" style="display: none;">Buy</button>
+          <button id="Auction" style="display: none;">Auction</button>
       </div>
       
       
